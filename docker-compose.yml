@@ -1,0 +1,32 @@
+networks:
+  a2a-network:
+
+
+services:
+  hub:
+    image: a2a-agents-hub
+    build:
+      context: ./hub
+      dockerfile: Dockerfile
+    container_name: a2a-agents-hub
+    ports:
+      - "10000:10000"
+    restart: unless-stopped
+    environment:
+      STREAMING: "true"
+      GOOGLE_API_KEY: $YOUR_API_KEY_HERE
+    networks:
+      - a2a-network
+
+  ui:
+    image: a2a-agents-ui
+    build:
+      context: .           
+      dockerfile: ui/Dockerfile
+    container_name: a2a-agents-ui
+    ports:
+      - "12000:12000"
+    environment:
+      GOOGLE_API_KEY: $YOUR_API_KEY_HERE
+    networks:
+      - a2a-network
